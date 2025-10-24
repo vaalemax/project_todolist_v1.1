@@ -147,24 +147,13 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <!-- percorso del tuo YAML -->
               <inputSpec>${project.basedir}/src/main/resources/todo.yml</inputSpec>
-
-              <!-- dice al plugin di generare codice per Spring -->
               <generatorName>spring</generatorName>
-
-              <!-- dove verrà salvato il codice generato -->
               <output>${project.build.directory}/generated-sources/openapi</output>
-
-              <!-- opzioni di configurazione -->
               <configOptions>
-                <!-- genera solo le interfacce (senza controller di default) -->
                 <interfaceOnly>true</interfaceOnly>
-                <!-- evita la generazione della classe DefaultApiController -->
                 <skipDefaultInterface>true</skipDefaultInterface>
-                <!-- usa i tag come nomi di controller -->
                 <useTags>true</useTags>
-                <!-- non gestire le exception -->
                 <unhandledException>true</unhandledException>
               </configOptions>
             </configuration>
