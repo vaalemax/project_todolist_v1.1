@@ -1,0 +1,172 @@
+openapi: "3.0.2"
+info:
+  title: API Todo
+  version: "1.0"
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: Todo
+    description: Todo specific data.
+paths:
+  /todo:
+    post:
+      tags:
+        - Todo
+      summary: Create Todo
+      operationId: createTodo
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '302':
+          description: Ritorna la pagina HTML
+          headers:
+            Location:
+              description: URL di redirect
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: NOT FOUND
+    get:
+      tags:
+        - Todo
+      summary: Get All Todos
+      operationId: getAllTodos
+      responses:
+        '200':
+          description: Ritorna la pagina HTML
+          content:
+            text/html:
+              schema:
+                type: string
+  /todo/{todoId}:
+    patch:
+      tags:
+        - Todo
+      summary: Update the title of the Todo
+      operationId: updateTitle
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The ID of the todo
+      responses:
+        '302':
+          description: Ritorna la pagina HTML
+          headers:
+            Location:
+              description: URL di redirect
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: NOT FOUND
+    delete:
+      tags:
+        - Todo
+      summary: Delete Todo
+      operationId: updateDelete
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The ID of the todo
+      responses:
+        '302':
+          description: Ritorna la pagina HTML
+          headers:
+            Location:
+              description: URL di redirect
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: NOT FOUND
+  /todo/toggle/{todoId}:
+    patch:
+      tags:
+        - Todo
+      summary: Update the toggle of the Todo
+      operationId: updateToggle
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: The ID of the todo
+      responses:
+        '302':
+          description: Ritorna la pagina HTML
+          headers:
+            Location:
+              description: URL di redirect
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: NOT FOUND
+components:
+  schemas:
+    TodoCreateDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the task
+        toggle:
+          type: boolean
+        delete:
+          type: boolean
+    TodoFormDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the task
+        toggle:
+          type: boolean
+          default: false
+        delete:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+    TodoFullDataDto:
+      allOf:
+        - $ref: '#/components/schemas/TodoCreateDto'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: the ID of the todo
+      description: Full data of the todo

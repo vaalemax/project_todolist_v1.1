@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<h1>Todo List</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th th:hidden="true">ID</th>
+    <th>Title</th>
+    <th>Mark/Unmark</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="todo : ${todos}">
+
+    <td th:text="${todo.id}" th:hidden="true">1</td>
+
+    <td th:style="${todo.toggle} ? 'text-decoration-line: line-through' : ''">
+      <div class="title-cell">
+        <span th:onclick="'toggleEdit('+ ${todo.id} +')'" class="edit-icon">
+          <i class="fa fa-pencil-alt"></i>
+        </span >
+
+        <span th:text="${todo.title}">Title</span>
+      </div>
+
+
+
+
+      <form th:action="@{/todo/{id}(id=${todo.id})}" th:method="patch" th:id="'editForm-' + ${todo.id}" style="display:none; margin-top:10px;">
+        <input type="text" name="title" placeholder="New title..." />
+        <button type="submit">
+          <i class="fas fa-edit"></i>
+        </button>
+      </form>
+    </td>
+
+    <td>
+      <form th:action="@{/todo/toggle/{id}(id=${todo.id})}" th:method="patch">
+        <button type="submit" class="toggle-icon">
+          <i class="fas fa-toggle-on"></i>
+        </button>
+      </form>
+    </td>
+
+    <td>
+      <form th:action="@{/todo/{id}(id=${todo.id})}" th:method="delete">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit" class="delete-icon">
+          <i class="fas fa-trash"></i>
+        </button>
+      </form>
+    </td>
+
+  </tr>
+  <tr>
+    <td>
+      <form th:action="@{/todo}" th:object="${todoForm}" method="post">
+        <input type="text" th:field="*{title}" placeholder="New task..." />
+        <button type="submit" class="add-icon">
+          <i class="fas fa-plus-circle"></i>
+        </button>
+      </form>
+    </td>
+  </tr>
+  <script>
+    function toggleEdit(id){
+      const form = document.getElementById('editForm-' + id);
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+  </tbody>
+</table>
+</body>
+</html>
